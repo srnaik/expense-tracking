@@ -1,6 +1,8 @@
 import  {Component} from 'react';
 import logo from './logo.svg';
+// @ts-expect-error TypeScript has no declaration for CSS side-effect imports.
 import './App.css';
+import Message from './Message';
 
 class App extends Component {
 
@@ -26,9 +28,8 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p> The value is: {firstValue} and it's of type :{typeof firstValue} type!</p>
-          <p> The tuple is: {aTuple[0]} and it's of type :{typeof aTuple[0]} type!</p>
-            </header>
+          <Message name={firstValue} message="What's up?" />
+          </header>
       </div>
     );
   }
