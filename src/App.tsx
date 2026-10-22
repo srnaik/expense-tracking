@@ -1,38 +1,38 @@
-import  {Component} from 'react';
+import  {useEffect, useState} from 'react';
 import logo from './logo.svg';
 // @ts-expect-error TypeScript has no declaration for CSS side-effect imports.
 import './App.css';
 import Message from './Message';
+import React from 'react';
 
-class App extends Component {
 
-  render() {
+  let firstValue: string = "User";
 
-  let firstValue: string = "S R Naik";
+  const App: React.FC = () => {
 
-  //Tuple
-  let aTuple: [string, number] = ['S R Naik', 1];
+    const [userName, setUserName] = useState<string>(firstValue);
+    const [userMessage, setUserMessage] = useState<string>("Hello!");
 
-  //enum
-  enum Color {Red, Green, Blue};
-  let c: Color = Color.Green;
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        updateUser();
+      }, 5000);
+      return () => clearTimeout(timer);
+    }, []);
 
-  //void function
-
-  const display = (): void => {
-    console.log("Hello World");
-    <p>Hello World!!</p>
-  }
+    const updateUser = () => {
+      setUserName("S R Naik");
+      setUserMessage("What's up?");
+    }
 
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <Message name={firstValue} message="What's up?" />
+          <Message name={userName} message={userMessage} />
           </header>
       </div>
     );
   }
-}
 
 export default App;
