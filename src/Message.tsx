@@ -1,15 +1,17 @@
 import React from 'react';
-
-interface userMessage{
-  name: string;
-  message: string;
-}
+import { UserContext } from './UserContext';
 
 
-const Message: React.FC<userMessage> = ({ name, message }) => {
+const Message: React.FC = () => {
+  const context = React.useContext(UserContext);
+
+  if(!context) {
+    throw new Error('Message component must be used within a UserContext.Provider');
+  }
+
   return (
     <div>
-      <p>{name},{message}</p>
+      <p>{context.userName}: {context.userMessage}</p>
     </div>
   );
 };

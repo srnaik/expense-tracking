@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import Message from './Message';
 import React from 'react';
+import { UserContext } from './UserContext';
 
 
   let firstValue: string = "User";
@@ -29,8 +30,10 @@ import React from 'react';
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <Message name={userName} message={userMessage} />
-          </header>
+          <UserContext.Provider value={{ userName, userMessage }}>
+            <Message />
+          </UserContext.Provider>
+        </header>
       </div>
     );
   }
