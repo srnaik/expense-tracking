@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { UserContext } from './UserContext';
 
 
 const Message: React.FC = () => {
-  const context = React.useContext(UserContext);
+  const context = useContext(UserContext);
 
   if(!context) {
     throw new Error('Message component must be used within a UserContext.Provider');
