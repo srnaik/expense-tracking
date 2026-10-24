@@ -1,0 +1,138 @@
+.signin-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+}
+
+.signin-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.signin-form h1 {
+    margin-bottom: 8px;
+    text-align: center;
+    color: #222;
+}
+
+.signin-form p {
+    color: #666;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.form-group {
+    margin-top: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.form-group input:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 1px;
+}
+
+.password-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.password-input input {
+    border: none;
+    min-width: 0;
+}
+
+.password-input input:focus {
+    outline: none;
+}
+
+.password-input button {
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: #2563eb;
+    cursor: pointer;
+}
+
+.signin-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+.signin-options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.signin-form a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.signin-form a:hover {
+    text-decoration: underline;
+}
+
+.signin-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.signin-button:hover {
+    background: #1d4ed8;
+}
+
+.signin-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.error-message {
+    margin-top: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 14px;
+}
+
+.signup-link {
+    margin-top: 24px;
+    font-size: 14px;
+}
