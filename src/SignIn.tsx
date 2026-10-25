@@ -4,7 +4,8 @@ import './SignIn.css';
 import { DashboardContext } from "./DashBoardContext";
 import DashBoard from "./DashBoard";
 
-const API_URL = "http://localhost:8080/api/auth/signin";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const SignIn: React.FC = () => {
 
@@ -32,6 +33,11 @@ const SignIn: React.FC = () => {
         try{
 
             setIsLoading(true);
+
+            if (!API_URL) {
+                setError('Authentication service is unavailable. Please try again later.');
+                return;
+            }
            
             // Call Authenticationn API here
             const response = await fetch(API_URL, {
