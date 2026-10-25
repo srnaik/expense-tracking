@@ -1,7 +1,10 @@
 import React, {type SubmitEvent, useState } from "react";
 // @ts-expect-error CSS files are handled by the bundler and have no TypeScript declarations.
 import './SignIn.css';
+import { DashboardContext } from "./DashBoardContext";
+import DashBoard from "./DashBoard";
 
+const API_URL = "http://localhost:8080/api/auth/signin";
 
 const SignIn: React.FC = () => {
 
@@ -10,6 +13,9 @@ const SignIn: React.FC = () => {
     const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const [userName, setUserName] = useState<string>('');
+
     
 
     const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
@@ -26,14 +32,49 @@ const SignIn: React.FC = () => {
         try{
 
             setIsLoading(true);
-           // TODO: Call Authenticationn API here
+           
+            // Call Authenticationn API here
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({ username: email.trim(),password: password,}),
+            });
 
+            if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.message || 'Invalid email or password');
+                setIsLoading(false);
+                return;
+            }
+
+            const data = await response.json();
+            console.log('Sign-in successful:', data);
+            console.log("API response:", data);
+            console.log("First name:", data.firstName);
+            setUserName(data.firstName);
+            // Handle successful sign-in (e.g., redirect, store token, etc.)
+            setIsLoading(false);
 
         } catch (error) {
             setError('An error occurred during sign-in. Please try again.');
             setIsLoading(false);
+        }finally {
+            setIsLoading(false);
         }
     };
+
+   
+if (userName !== '') {
+    return (
+        <DashboardContext.Provider value={{ userName }}>
+            <DashBoard />
+        </DashboardContext.Provider>
+    );
+}
+
 
     return (
         <div className="signin-container">

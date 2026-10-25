@@ -1,0 +1,13 @@
+.dashboard-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f7fb;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-container h1 {
+    color: #1f2937;
+    font-size: 2rem;
+}
