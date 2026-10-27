@@ -1,22 +1,32 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// @ts-expect-error CSS is handled by the bundler and has no TypeScript declarations.
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+// @ts-expect-error CSS files are handled by the bundler and have no TypeScript declarations.
 import './index.css';
-//import App from './App';
 import reportWebVitals from './reportWebVitals';
 import SignIn from './SignIn';
+import SignUp from './SIgnUp';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    {/* <App/> */}
-    <SignIn />
-  </React.StrictMode>
+    document.getElementById('root') as HTMLElement
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+root.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+
+                <Route
+                    path="/"
+                    element={<Navigate to="/signin" replace />}
+                />
+            </Routes>
+        </BrowserRouter>
+    </React.StrictMode>
+);
+
 reportWebVitals();
+
