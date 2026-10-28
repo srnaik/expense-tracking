@@ -3,6 +3,7 @@ import React, {type SubmitEvent, useState } from "react";
 import './SignIn.css';
 import { DashboardContext } from "./DashBoardContext";
 import DashBoard from "./DashBoard";
+import { useAuth, type AuthUser } from "./AuthContext";
 
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -15,7 +16,7 @@ const SignIn: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const [userName, setUserName] = useState<string>('');
+    const { user, login } = useAuth();
 
     
 
@@ -56,11 +57,10 @@ const SignIn: React.FC = () => {
                 return;
             }
 
-            const data = await response.json();
-            console.log('Sign-in successful:', data);
+            const data: AuthUser = await response.json();
+            login(data);
             console.log("API response:", data);
             console.log("First name:", data.firstName);
-            setUserName(data.firstName);
             // Handle successful sign-in (e.g., redirect, store token, etc.)
             setIsLoading(false);
 
@@ -73,11 +73,11 @@ const SignIn: React.FC = () => {
     };
 
    
-if (userName !== '') {
-    return (
-        <DashboardContext.Provider value={{ userName }}>
-            <DashBoard />
-        </DashboardContext.Provider>
+    if (user) {
+        return (
+            <DashboardContext.Provider value={{ userName: user.firstName }}>
+                <DashBoard />
+            </DashboardContext.Provider>
     );
 }
 

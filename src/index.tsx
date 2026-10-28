@@ -7,6 +7,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import SignIn from './SignIn';
 import SignUp from './SIgnUp';
+import { AuthProvider } from './AuthContext';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,6 +15,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
+        <AuthProvider>
         <BrowserRouter>
             <Routes>
                 <Route path="/signin" element={<SignIn />} />
@@ -25,6 +27,7 @@ root.render(
                 />
             </Routes>
         </BrowserRouter>
+        </AuthProvider>
     </React.StrictMode>
 );
 
