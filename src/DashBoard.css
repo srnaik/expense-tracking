@@ -1,13 +1,129 @@
+
 .dashboard-container {
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 40px;
     background-color: #f5f7fb;
+    color: #1e293b;
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
-.dashboard-container h1 {
-    color: #1f2937;
-    font-size: 2rem;
+.dashboard-header {
+    max-width: 1100px;
+    margin: 0 auto 32px;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 10px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #172554;
+}
+
+.dashboard-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-bottom: 1px solid #dbe2ea;
+}
+
+.dashboard-tab {
+    padding: 16px 4px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    background: transparent;
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.dashboard-tab:hover {
+    color: #2563eb;
+}
+
+.dashboard-tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+}
+
+.dashboard-tab:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 4px;
+}
+
+.dashboard-content {
+    max-width: 1100px;
+    margin: 32px auto 0;
+}
+
+.dashboard-content h2 {
+    margin: 0 0 12px;
+    font-size: 24px;
+    color: #172554;
+}
+
+.dashboard-content section > p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.dashboard-card {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.dashboard-card h3 {
+    margin-top: 0;
+    color: #334155;
+}
+
+.dashboard-card p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.placeholder-value {
+    margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 24px 16px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 26px;
+    }
+
+    .dashboard-tabs {
+        gap: 20px;
+    }
+
+    .dashboard-tab {
+        padding: 14px 0;
+        font-size: 14px;
+    }
+
+    .dashboard-content h2 {
+        font-size: 21px;
+    }
+
+    .dashboard-card {
+        padding: 18px;
+    }
 }
