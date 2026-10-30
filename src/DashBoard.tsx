@@ -3,21 +3,34 @@ import { DashboardContext } from "./DashBoardContext";
 // CSS is resolved by the bundler and does not have a TypeScript declaration.
 // @ts-ignore
 import './DashBoard.css';
+import { useAuth } from "./AuthContext";
 
 type Tab = "spending" | "transactions" | "settings";
 
 const DashBoard: React.FC = () => {
     const { userName } = React.useContext(DashboardContext);
     const [activeTab, setActiveTab] = useState<Tab>("spending");
+    const { logout } = useAuth();
 
 
     if(!userName) {
     throw new Error('Message component must be used within a UserContext.Provider');
   }
 
+   const handleSignOut = () => {
+        logout();
+    };
+
    return (
         <div className="dashboard-container">
             <header className="dffashboard-header">
+                 <button
+                    type="button"
+                    className="signout-button"
+                    onClick={handleSignOut}
+                >
+                    Sign Out
+                </button>
                 <div>
                     <h1>Welcome, {userName}!</h1>
                     <p>
@@ -33,8 +46,7 @@ const DashBoard: React.FC = () => {
                         activeTab === "spending" ? "active" : ""
                     }`}
                     onClick={() => setActiveTab("spending")}
-                    aria-current={activeTab === "spending" ? "page" : undefined}
-                >
+                    aria-current={activeTab === "spending" ? "page" : undefined}>
                     Spending
                 </button>
 
