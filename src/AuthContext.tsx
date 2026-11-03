@@ -15,6 +15,8 @@ interface AuthContextType {
     logout: () => void;
 }
 
+const API_URL = process.env.REACT_APP_SIGNOUT_URL;
+
 const AuthContext = createContext<AuthContextType>({
     user: null,
     login: () => {},
@@ -41,9 +43,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
     };
 
-    const logout = () => {
+    const logout = async () => {
+       if (!API_URL) {
+        console.error('Sign-out service is unavailable.');
+        return;
+    }
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: `Bearer ${user?.token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to sign out');
+        }
+
+        const data = await response.json();
+
+        console.log('Sign-out successful:', data);
+
         setUser(null);
         sessionStorage.removeItem(SESSION_KEY);
+
+    } catch (error) {
+        console.error('Error during sign-out:', error);
+    }
+
     };
 
     return (
