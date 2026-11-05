@@ -88,6 +88,25 @@ const DashBoard: React.FC = () => {
                                 No spending data available yet.
                             </p>
                         </div>
+                        <div className="spending-actions">
+            <button
+                type="button"
+                className="action-button expense-button"
+                onClick={() => console.log("Add Expense clicked")}
+            >
+                <span className="button-icon">−</span>
+                Add Expense
+            </button>
+
+            <button
+                type="button"
+                className="action-button income-button"
+                onClick={() => console.log("Add Income clicked")}
+            >
+                <span className="button-icon">+</span>
+                Add Income
+            </button>
+        </div>
                     </section>
                 )}
 
