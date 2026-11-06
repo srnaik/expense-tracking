@@ -4,13 +4,14 @@ import { DashboardContext } from "./DashBoardContext";
 // @ts-ignore
 import './DashBoard.css';
 import { useAuth } from "./AuthContext";
-
+import Expense from "./Expense";
 type Tab = "spending" | "transactions" | "settings";
 
 const DashBoard: React.FC = () => {
     const { userName } = React.useContext(DashboardContext);
     const [activeTab, setActiveTab] = useState<Tab>("spending");
     const { logout } = useAuth();
+    const [showExpense, setShowExpense] = useState(false);
 
 
     if(!userName) {
@@ -76,6 +77,9 @@ const DashBoard: React.FC = () => {
             </nav>
 
             <main className="dashboard-content">
+                    {showExpense ? (
+        <Expense onBack={() => setShowExpense(false)} />
+    ) : (<>
                 {activeTab === "spending" && (
                     <section>
                         <h2>Spending Overview</h2>
@@ -92,7 +96,7 @@ const DashBoard: React.FC = () => {
             <button
                 type="button"
                 className="action-button expense-button"
-                onClick={() => console.log("Add Expense clicked")}
+                onClick={() => setShowExpense(!showExpense)}
             >
                 <span className="button-icon">−</span>
                 Add Expense
@@ -138,6 +142,7 @@ const DashBoard: React.FC = () => {
                         </div>
                     </section>
                 )}
+                </>)}
             </main>
         </div>
     );
