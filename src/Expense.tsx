@@ -1,7 +1,8 @@
 
-import React from "react";
+import React, { useState } from "react";
 // @ts-ignore TypeScript may not have a declaration for CSS side-effect imports.
 import './Expense.css';
+import { useAuth } from "./AuthContext";
 
 interface ExpenseProps {
     onBack: () => void;
@@ -14,12 +15,28 @@ interface ExpenseItem {
     category: string;
 }
 
+interface Category {
+    id: number;
+    name: string;
+}
+
+const CATEGORIES_API_URL = process.env.REACT_APP_CATEGORIES_URL;
 const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
 
     const [expenses, setExpenses] = React.useState<ExpenseItem[]>([]);
     const [date, setDate] = React.useState<string>('');
     const [amount, setAmount] = React.useState<number>(0);
+    const [categories, setCategories] = React.useState<Category[]>([]);
     const [category, setCategory] = React.useState<string>('');
+    const [error, setError] = React.useState<string>('');
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const { user } = useAuth();
+
+    React.useEffect(() => {
+        if(user?.token) {
+            fetchCategories();
+        }
+    }, [user?.token]);
 
     const handleAddExpense = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -29,13 +46,55 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                 id: Date.now(),
                 date,
                 amount,
-                category
+                category,
             };
 
             setExpenses((prev) => [...prev, newExpense]);
             setDate('');
             setAmount(0);
             setCategory('');
+        }
+    };
+
+    const fetchCategories = async() => {
+
+        if (!user?.token) {
+            console.error("No authentication token available");
+            return;
+        }
+
+        setIsLoading(true);
+        setError('');
+
+        try{
+
+            if (!CATEGORIES_API_URL) {
+                throw new Error('Categories API URL is not configured.');
+            }
+
+            const data = await fetch(CATEGORIES_API_URL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${user?.token}`,
+                },
+            });
+
+            console.log("Status:", data.status);
+
+
+            if (!data.ok) {
+                throw new Error('Failed to fetch categories');
+            }
+
+            const categoriesData: Category[] = await data.json();
+            setCategories(categoriesData);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            setError('Failed to load categories. Please try again later.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -78,16 +137,17 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         required
+                        disabled={isLoading || !!error}
                     >
-                        <option value="">Select Category</option>
-                        <option value="Food">Food</option>
-                        <option value="Transportation">Transportation</option>
-                        <option value="Shopping">Shopping</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Housing">Housing</option>
-                        <option value="Other">Other</option>
+                        <option value="">
+                           {isLoading ? 'Loading categories...' : 'Select a category'}
+                        </option>
+
+                        {categories.map((item) => (
+                            <option key={item.id} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
@@ -133,3 +193,4 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
 };
 
 export default Expense;
+
