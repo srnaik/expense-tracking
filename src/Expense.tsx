@@ -16,8 +16,11 @@ interface ExpenseItem {
 }
 
 interface Category {
-    id: number;
-    name: string;
+    id: string;
+    categoryName: string;
+    type: string;
+    icon: string;
+    color: string;
 }
 
 const CATEGORIES_API_URL = process.env.REACT_APP_CATEGORIES_URL;
@@ -89,7 +92,8 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
             }
 
             const categoriesData: Category[] = await data.json();
-            setCategories(categoriesData);
+            const expenseCategories = categoriesData.filter((item) => item.type === "EXPENSE");
+            setCategories(expenseCategories);
         } catch (error) {
             console.error('Error fetching categories:', error);
             setError('Failed to load categories. Please try again later.');
@@ -144,8 +148,8 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                         </option>
 
                         {categories.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item.name}
+                            <option key={item.id} value={item.categoryName}>
+                                {item.categoryName}
                             </option>
                         ))}
                     </select>
