@@ -13,6 +13,7 @@ interface ExpenseItem {
     date: string;
     amount: number;
     category: string;
+    description: string;
 }
 
 interface Category {
@@ -29,6 +30,7 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
     const [expenses, setExpenses] = React.useState<ExpenseItem[]>([]);
     const [date, setDate] = React.useState<string>('');
     const [amount, setAmount] = React.useState<number>(0);
+    const [description, setDescription] = React.useState<string>('');
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [category, setCategory] = React.useState<string>('');
     const [error, setError] = React.useState<string>('');
@@ -50,12 +52,14 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                 date,
                 amount,
                 category,
+                description,
             };
 
             setExpenses((prev) => [...prev, newExpense]);
             setDate('');
             setAmount(0);
             setCategory('');
+            setDescription('');
         }
     };
 
@@ -155,6 +159,17 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                     </select>
                 </div>
 
+                 <div className="expense-form-group">
+                    <label htmlFor="description">Description</label>
+                    <input
+                        type="text"
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
+                </div>
+
                 <button type="submit" className="expense-action-button">
                     Save Expense
                 </button>
@@ -171,6 +186,7 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                             <th>Date</th>
                             <th>Amount</th>
                             <th>Category</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -179,6 +195,7 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                                 <td>{expense.date}</td>
                                 <td>${expense.amount.toFixed(2)}</td>
                                 <td>{expense.category}</td>
+                                <td>{expense.description}</td>
                             </tr>
                         ))}
                     </tbody>
