@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { type SubmitEvent, useState } from "react";
 // @ts-ignore TypeScript may not have a declaration for CSS side-effect imports.
 import './Expense.css';
 import { useAuth } from "./AuthContext";
@@ -106,12 +106,85 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
         }
     };
 
+    const handleAddTransaction = async (e: SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!user?.token) {
+            console.error("No authentication token available");
+            return;
+        }
+
+        if (!date || amount <= 0 || !category) {
+            setError('Please fill in all required fields.');
+            return;
+        }
+        
+        const CREATE_TRANSACTION_URL = process.env.REACT_APP_CREATE_TRANSACTION_URL;
+
+        if (!CREATE_TRANSACTION_URL) {
+            console.error('Create Transaction API URL is not configured.');
+            return;
+        }
+
+        setIsLoading(true);
+        setError('');
+
+        try {
+            const response = await fetch(CREATE_TRANSACTION_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${user?.token}`,
+                },
+                body: JSON.stringify({
+                    categoryId: category,
+                    amount: amount,
+                    currency: "USD", // Assuming USD for simplicity; adjust as needed
+                    description: description,
+                    transactionDate: new Date(date).toISOString(),
+                }),
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage || "Failed to add expense");
+            }
+
+            const data = await response.json();
+            console.log('Expense saved successfully:', data);
+            const selectedCategory = categories.find((item) => item.id === category);
+            // Update expense history after successful API response
+             const newExpense: ExpenseItem = {
+                                    id: Date.now(),
+                                    date,
+                                    amount,
+                                    category: selectedCategory ? selectedCategory.categoryName : "UNKNOWN",
+                                    description: description.trim(),
+                                }
+
+            setExpenses((prev) => [...prev, newExpense]);
+
+             // Reset form fields
+            setDate("");
+            setAmount(0);
+            setCategory("");
+            setDescription("");
+        } catch (error) {
+            console.error("Error creating transaction:", error);
+            setError(error instanceof Error ? error.message: "Something went wrong while saving the expense.");
+        }finally {
+            setIsLoading(false);
+        }
+    };
+
+
     return (
         <div className="expense-container">
             <h2>Expense Management</h2>
             <p>Track and manage your expenses effectively.</p>
 
-            <form onSubmit={handleAddExpense} className="expense-form">
+            <form className="expense-form" onSubmit={handleAddTransaction}>
 
                 <div className="expense-form-group">
                     <label htmlFor="date">Date</label>
@@ -152,7 +225,7 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                         </option>
 
                         {categories.map((item) => (
-                            <option key={item.id} value={item.categoryName}>
+                            <option key={item.id} value={item.id}>
                                 {item.categoryName}
                             </option>
                         ))}
@@ -170,8 +243,8 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
                     />
                 </div>
 
-                <button type="submit" className="expense-action-button">
-                    Save Expense
+                <button type="submit" className="expense-action-button" disabled={isLoading}>
+                    {isLoading ? 'Saving...' : 'Save Expense'}
                 </button>
             </form>
 
