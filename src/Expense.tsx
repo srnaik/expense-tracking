@@ -43,26 +43,6 @@ const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
         }
     }, [user?.token]);
 
-    const handleAddExpense = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (date && amount > 0 && category) {
-            const newExpense: ExpenseItem = {
-                id: Date.now(),
-                date,
-                amount,
-                category,
-                description,
-            };
-
-            setExpenses((prev) => [...prev, newExpense]);
-            setDate('');
-            setAmount(0);
-            setCategory('');
-            setDescription('');
-        }
-    };
-
     const fetchCategories = async() => {
 
         if (!user?.token) {
