@@ -1,5 +1,5 @@
 
-import React, { type SubmitEvent, useState } from "react";
+import React, { type SubmitEvent, useState, useEffect } from "react";
 // @ts-ignore TypeScript may not have a declaration for CSS side-effect imports.
 import './Expense.css';
 import { useAuth } from "./AuthContext";
@@ -27,17 +27,17 @@ interface Category {
 const CATEGORIES_API_URL = process.env.REACT_APP_CATEGORIES_URL;
 const Expense: React.FC<ExpenseProps> = ({ onBack }) => {
 
-    const [expenses, setExpenses] = React.useState<ExpenseItem[]>([]);
-    const [date, setDate] = React.useState<string>('');
-    const [amount, setAmount] = React.useState<number>(0);
-    const [description, setDescription] = React.useState<string>('');
-    const [categories, setCategories] = React.useState<Category[]>([]);
-    const [category, setCategory] = React.useState<string>('');
-    const [error, setError] = React.useState<string>('');
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [expenses, setExpenses] = useState<ExpenseItem[]>([]);
+    const [date, setDate] = useState<string>('');
+    const [amount, setAmount] = useState<number>(0);
+    const [description, setDescription] = useState<string>('');
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [category, setCategory] = useState<string>('');
+    const [error, setError] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { user } = useAuth();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if(user?.token) {
             fetchCategories();
         }
