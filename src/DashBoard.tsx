@@ -2,152 +2,130 @@ import React, { useState } from "react";
 import { DashboardContext } from "./DashBoardContext";
 // CSS is resolved by the bundler and does not have a TypeScript declaration.
 // @ts-ignore
-import './DashBoard.css';
+import "./DashBoard.css";
 import { useAuth } from "./AuthContext";
 import Expense from "./Expense";
 import Income from "./Income";
+import Transactions from "./Transactions";
 type Tab = "spending" | "transactions" | "settings";
 
 const DashBoard: React.FC = () => {
-    const { userName } = React.useContext(DashboardContext);
-    const [activeTab, setActiveTab] = useState<Tab>("spending");
-    const { logout } = useAuth();
-    const [showExpense, setShowExpense] = useState(false);
-    const[showIncome, setShowIncome] = useState(false);
+  const { userName } = React.useContext(DashboardContext);
+  const [activeTab, setActiveTab] = useState<Tab>("spending");
+  const { logout } = useAuth();
+  const [showExpense, setShowExpense] = useState(false);
+  const [showIncome, setShowIncome] = useState(false);
 
-
-    if(!userName) {
-    throw new Error('Message component must be used within a UserContext.Provider');
+  if (!userName) {
+    throw new Error(
+      "Message component must be used within a UserContext.Provider",
+    );
   }
 
-   const handleSignOut = () => {
-        logout();
-    };
+  const handleSignOut = () => {
+    logout();
+  };
 
-   return (
-        <div className="dashboard-container">
-            <header className="dffashboard-header">
-                 <button
-                    type="button"
-                    className="signout-button"
-                    onClick={handleSignOut}
-                >
-                    Sign Out
-                </button>
-                <div>
-                    <h1>Welcome, {userName}!</h1>
-                    <p>
-                        Manage your finances all in one place.
-                    </p>
+  return (
+    <div className="dashboard-container">
+      <header className="dffashboard-header">
+        <button
+          type="button"
+          className="signout-button"
+          onClick={handleSignOut}>
+          Sign Out
+        </button>
+        <div>
+          <h1>Welcome, {userName}!</h1>
+          <p>Manage your finances all in one place.</p>
+        </div>
+      </header>
+
+      <nav className="dashboard-tabs" aria-label="Dashboard sections">
+        <button
+          type="button"
+          className={`dashboard-tab ${
+            activeTab === "spending" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("spending")}
+          aria-current={activeTab === "spending" ? "page" : undefined}>
+          Spending
+        </button>
+
+        <button
+          type="button"
+          className={`dashboard-tab ${activeTab === "transactions" ? "active" : ""}`}
+          onClick={() => setActiveTab("transactions")}
+          aria-current={activeTab === "transactions" ? "page" : undefined}>
+          Transactions
+        </button>
+
+        <button
+          type="button"
+          className={`dashboard-tab ${ activeTab === "settings" ? "active" : ""}`}
+          onClick={() => setActiveTab("settings")}
+          aria-current={activeTab === "settings" ? "page" : undefined}>
+          Settings
+        </button>
+      </nav>
+
+      <main className="dashboard-content">
+        {showExpense ? (
+          <Expense onBack={() => setShowExpense(false)} />
+        ) : showIncome ? (
+          <Income onBack={() => setShowIncome(false)} />
+        ) : activeTab === "transactions" ? (
+          <Transactions onBack={() => setActiveTab("spending")} />
+        ) : (
+          <>
+            {activeTab === "spending" && (
+              <section>
+                <h2>Spending Overview</h2>
+                <p>View your spending habits and manage your budget.</p>
+                <div className="dashboard-card">
+                  <h3>Total Spending</h3>
+                  <p className="placeholder-value">
+                    No spending data available yet.
+                  </p>
                 </div>
-            </header>
-
-            <nav className="dashboard-tabs" aria-label="Dashboard sections">
-                <button
+                <div className="spending-actions">
+                  <button
                     type="button"
-                    className={`dashboard-tab ${
-                        activeTab === "spending" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("spending")}
-                    aria-current={activeTab === "spending" ? "page" : undefined}>
-                    Spending
-                </button>
+                    className="action-button expense-button"
+                    onClick={() => setShowExpense(!showExpense)}
+                  >
+                    <span className="button-icon">−</span>
+                    Add Expense
+                  </button>
 
-                <button
+                  <button
                     type="button"
-                    className={`dashboard-tab ${
-                        activeTab === "transactions" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("transactions")}
-                    aria-current={
-                        activeTab === "transactions" ? "page" : undefined
-                    }
-                >
-                    Transactions
-                </button>
+                    className="action-button income-button"
+                    onClick={() => setShowIncome(!showIncome)}
+                  >
+                    <span className="button-icon">+</span>
+                    Add Income
+                  </button>
+                </div>
+              </section>
+            )}
 
-                <button
-                    type="button"
-                    className={`dashboard-tab ${
-                        activeTab === "settings" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("settings")}
-                    aria-current={activeTab === "settings" ? "page" : undefined}
-                >
-                    Settings
-                </button>
-            </nav>
-
-            <main className="dashboard-content">
-                    {showExpense ? (
-        <Expense onBack={() => setShowExpense(false)} />
-    ) : showIncome ? (
-    <Income onBack={() => setShowIncome(false)} /> ): (<>
-                {activeTab === "spending" && (
-                    <section>
-                        <h2>Spending Overview</h2>
-                        <p>
-                            View your spending habits and manage your budget.
-                        </p>
-                        <div className="dashboard-card">
-                            <h3>Total Spending</h3>
-                            <p className="placeholder-value">
-                                No spending data available yet.
-                            </p>
-                        </div>
-                        <div className="spending-actions">
-            <button
-                type="button"
-                className="action-button expense-button"
-                onClick={() => setShowExpense(!showExpense)}
-            >
-                <span className="button-icon">−</span>
-                Add Expense
-            </button>
-
-            <button
-                type="button"
-                className="action-button income-button"
-                onClick={() => setShowIncome(!showIncome)}
-            >
-                <span className="button-icon">+</span>
-                Add Income
-            </button>
-        </div>
-                    </section>
-                )}
-
-                {activeTab === "transactions" && (
-                    <section>
-                        <h2>Transactions</h2>
-                        <p>
-                            Review your recent payments and deposits.
-                        </p>
-                        <div className="dashboard-card">
-                            <p>
-                                Your transactions will appear here once
-                                transaction data is connected.
-                            </p>
-                        </div>
-                    </section>
-                )}
-
-                {activeTab === "settings" && (
-                    <section>
-                        <h2>Settings</h2>
-                        <p>Manage your account preferences.</p>
-                        <div className="dashboard-card">
-                            <h3>Account Settings</h3>
-                            <p>
-                                Account preferences and profile options
-                                will appear here.
-                            </p>
-                        </div>
-                    </section>
-                )}
-                </>)}
-            </main>
-        </div>
-    );
+            {activeTab === "settings" && (
+              <section>
+                <h2>Settings</h2>
+                <p>Manage your account preferences.</p>
+                <div className="dashboard-card">
+                  <h3>Account Settings</h3>
+                  <p>
+                    Account preferences and profile options will appear here.
+                  </p>
+                </div>
+              </section>
+            )}
+          </>
+        )}
+      </main>
+    </div>
+  );
 };
 export default DashBoard;
