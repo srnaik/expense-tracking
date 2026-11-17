@@ -1,3 +1,9 @@
+
+/* Transactions Container */
+.transactions-container {
+    padding: 20px;
+}
+
 /* Back Button */
 .transactions-back-button {
     background-color: #64748b;
@@ -7,7 +13,7 @@
     background-color: #475569;
 }
 
-/* Expense Buttons */
+/* Action Buttons */
 .transactions-action-button {
     padding: 11px 20px;
     background-color: #2563eb;
@@ -18,4 +24,65 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
+}
+
+/* Form Group */
+.transactions-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    max-width: 350px;
+    gap: 8px;
+}
+
+/* Dropdown Label */
+.transactions-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* Dropdown */
+.transactions-form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    /* Remove default browser appearance */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Custom dropdown arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* Dropdown Hover */
+.transactions-form-group select:hover {
+    border-color: #94a3b8;
+}
+
+/* Dropdown Focus */
+.transactions-form-group select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Dropdown Options */
+.transactions-form-group select option {
+    padding: 10px;
+    color: #334155;
+    background-color: #ffffff;
 }
