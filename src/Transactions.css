@@ -26,16 +26,6 @@
     transition: background-color 0.2s;
 }
 
-/* Form Group */
-.transactions-form-group {
-    display: flex;
-    flex-direction: column;
-    margin-top: 25px;
-    margin-bottom: 20px;
-    max-width: 350px;
-    gap: 8px;
-}
-
 /* Dropdown Label */
 .transactions-form-group label {
     font-size: 14px;
@@ -85,4 +75,45 @@
     padding: 10px;
     color: #334155;
     background-color: #ffffff;
+}
+
+.transactions-form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-field label {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.form-field select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Responsive layout for mobile devices */
+@media (max-width: 600px) {
+  .transactions-form-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-field {
+    width: 100%;
+  }
 }
