@@ -1,6 +1,6 @@
-import React from "react";
 
-// @ts-ignore TypeScript may not have a declaration for CSS side-effect imports.
+import React from "react";
+// @ts-expect-error CSS imports are handled by the bundler.
 import "./Transactions.css";
 
 interface TransactionsProps {
@@ -12,6 +12,19 @@ const Transactions: React.FC<TransactionsProps> = ({ onBack }) => {
   const [filteredType, setFilteredType] = React.useState<string>("");
   const [filteredCategory, setFilteredCategory] = React.useState<string>("");
 
+  // Handle duration selection
+  const handleDurationChange = (value: string) => {
+    setFilteredDuration(value);
+    setFilteredType("");
+    setFilteredCategory("");
+  };
+
+  // Handle type selection
+  const handleTypeChange = (value: string) => {
+    setFilteredType(value);
+    setFilteredCategory("");
+  };
+
   return (
     <div className="transactions-container">
       <h2>Select Filter To View Transactions</h2>
@@ -22,7 +35,7 @@ const Transactions: React.FC<TransactionsProps> = ({ onBack }) => {
           <select
             id="filteredDuration"
             value={filteredDuration}
-            onChange={(e) => setFilteredDuration(e.target.value)}
+            onChange={(e) => handleDurationChange(e.target.value)}
             required
           >
             <option value="">Select Duration</option>
@@ -41,7 +54,8 @@ const Transactions: React.FC<TransactionsProps> = ({ onBack }) => {
           <select
             id="filteredType"
             value={filteredType}
-            onChange={(e) => setFilteredType(e.target.value)}
+            onChange={(e) => handleTypeChange(e.target.value)}
+            disabled={!filteredDuration}
             required
           >
             <option value="">Select Type</option>
@@ -56,6 +70,7 @@ const Transactions: React.FC<TransactionsProps> = ({ onBack }) => {
             id="filteredCategory"
             value={filteredCategory}
             onChange={(e) => setFilteredCategory(e.target.value)}
+            disabled={!filteredType}
             required
           >
             <option value="">Select Category</option>
@@ -63,6 +78,23 @@ const Transactions: React.FC<TransactionsProps> = ({ onBack }) => {
             <option value="Salary">Salary</option>
           </select>
         </div>
+        <div className="form-field">
+    <label>&nbsp;</label>
+    <button
+      type="button"
+      className="transactions-action-button"
+      disabled={!filteredDuration || !filteredType || !filteredCategory}
+      onClick={() => {
+        console.log("Selected Filters:", {
+          duration: filteredDuration,
+          type: filteredType,
+          category: filteredCategory,
+        });
+      }}
+    >
+      Get Data
+    </button>
+  </div>
       </div>
 
       <button
